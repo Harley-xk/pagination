@@ -10,7 +10,7 @@ import Fluent
 import Vapor
 
 /// A page with information used to create pagination output.
-public struct Page<M: Content> {
+public struct Page<M: Content>: Content {
 
     // MARK: - Properties
 
@@ -38,5 +38,9 @@ public struct Page<M: Content> {
         self.data = data
         self.size = size
         self.total = total
+    }
+    
+    public func mapData<N: Content>(_ mapper: ([M]) -> [N]) -> Page<N> {
+        return Page(number: number, data: mapper(data), size: size, total: total)
     }
 }

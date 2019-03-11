@@ -20,23 +20,6 @@ public protocol Paginatable: Model {
 
 // MARK: - Defualts
 
-extension Paginatable {
-
-    public static var defaultPageSize: Int {
-        return 10
-    }
-
-    public static var maxPageSize: Int? {
-        return nil
-    }
-
-    public static var defaultPageSorts: [Self.Database.QuerySort] {
-        return [
-            Self.createdAtKey?.querySort(Self.Database.querySortDirectionDescending) ?? Self.idKey.querySort(Self.Database.querySortDirectionDescending)
-        ]
-    }
-
-}
 
 extension KeyPath where Root: Model {
 

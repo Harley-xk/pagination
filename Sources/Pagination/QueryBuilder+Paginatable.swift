@@ -11,23 +11,9 @@ import Vapor
 
 extension QueryBuilder where Result: Paginatable & Content, Result.Database == Database {
 
-    /// Returns a page-based response using page number from the request data.
-    public func paginate(for req: Request) throws -> Future<Paginated<Result>> {
-        return try self.page(for: req).map { Paginated(from: $0) }
-    }
-
     /// Returns a custom page-based response using page number from the request data.
     public func paginate<T>(for req: Request, response type: T.Type) throws -> Future<T> where T: PaginatedResponse, T.DataType == Result {
         return try self.page(for: req).map(to: type) { type.init(from: $0) }
-    }
-
-    /// Returns a page-based response using page number from the request data using a transformtion closure.
-    public func paginate<R>(
-        on req: Request,
-        _ transformation: @escaping (QueryBuilder<Database, Result>) throws -> Future<[R]>
-        ) throws -> Future<Paginated<R>> where R: Content {
-
-        return try self.page(for: req, transformation).map { Paginated(from: $0) }
     }
 
     /// Returns a custom page-based response using page number from the request data using a transformtion closure.
